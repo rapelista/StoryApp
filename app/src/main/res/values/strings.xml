@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">Story App</string>
+
+    <string name="name">Nama</string>
+    <string name="password">Password</string>
+    <string name="error_password">Minimal 8 karakter</string>
+    <string name="login">Masuk</string>
+    <string name="or">atau</string>
+    <string name="register">Daftar</string>
+    <string name="welcome">Selamat Datang!</string>
+    <string name="email">Email</string>
+    <string name="email_empty">Masukkan email</string>
+    <string name="password_empty">Masukkan password</string>
+    <string name="name_empty">Masukkan nama</string>
+    <string name="empty_field">Masukkan %s</string>
+
+    <string name="register_success_title">Halo %s!</string>
+    <string name="register_success_message">Akun berhasil dibuat, silahkan login dan upload ceritamu!</string>
+    <string name="register_success_ok">Okay</string>
+    <string name="tv_main">Hello %s!</string>
+    <string name="logout">Keluar</string>
+    <string name="logout_alert_message">Apakah yakin ingin keluar?</string>
+    <string name="logout_alert_confirm">Iya</string>
+    <string name="login_success">Login berhasil!</string>
+    <string name="login_success_ok">Okay</string>
+    <string name="login_failed">Login gagal!</string>
+    <string name="login_failed_ok">Okay</string>
+</resources>
