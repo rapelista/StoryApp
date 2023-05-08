@@ -21,6 +21,7 @@ import com.gvstang.dicoding.latihan.storyapp.util.animation.Animation
 import com.gvstang.dicoding.latihan.storyapp.view.ViewModelFactory
 import com.gvstang.dicoding.latihan.storyapp.view.main.MainActivity
 import com.gvstang.dicoding.latihan.storyapp.view.register.RegisterActivity
+import com.gvstang.dicoding.latihan.storyapp.view.splash_login.SplashLoginActivity
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
@@ -89,12 +90,15 @@ class LoginActivity : AppCompatActivity() {
                     true
                 ))
             }
-            showDialog(true)
+
+            val intent = Intent(this@LoginActivity, SplashLoginActivity::class.java)
+            startActivity(intent)
+            finish()
         }
 
         loginViewModel.isError.observe(this) { isError ->
             if(isError) {
-                showDialog(!isError)
+                showDialogError()
             }
         }
     }
@@ -119,20 +123,10 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    fun showDialog(success: Boolean) {
+    fun showDialogError() {
         MaterialAlertDialogBuilder(this@LoginActivity, com.google.android.material.R.style.MaterialAlertDialog_Material3).apply {
-            if(success) {
-                setMessage(resources.getString(R.string.login_success))
-                setPositiveButton(resources.getString(R.string.login_success_ok)) { _, _ ->
-                    val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                    startActivity(intent)
-                    finish()
-                }
-            } else {
-                setMessage(resources.getString(R.string.login_failed))
-                setPositiveButton(resources.getString(R.string.login_failed_ok)) { _, _ -> }
-            }
+            setMessage(resources.getString(R.string.login_failed))
+            setPositiveButton(resources.getString(R.string.login_failed_ok)) { _, _ -> }
             show()
         }
     }

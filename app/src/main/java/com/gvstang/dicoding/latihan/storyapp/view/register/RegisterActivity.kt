@@ -74,7 +74,13 @@ class RegisterActivity : AppCompatActivity() {
 
         registerViewModel.responseBody.observe(this) { responseBody ->
             if(!responseBody.error) {
-                showDialog()
+                showDialog(true)
+            }
+        }
+
+        registerViewModel.isError.observe(this) { isError ->
+            if(isError) {
+                showDialog(!isError)
             }
         }
     }
@@ -100,13 +106,21 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
-    private fun showDialog() {
+    private fun showDialog(success: Boolean) {
         MaterialAlertDialogBuilder(this@RegisterActivity, com.google.android.material.R.style.MaterialAlertDialog_Material3)
-            .setTitle(resources.getString(R.string.register_success_title))
-            .setMessage(resources.getString(R.string.register_success_message))
-            .setPositiveButton(resources.getString(R.string.register_success_ok)) { _, _ ->
-                startActivity(Intent(this@RegisterActivity, LoginActivity::class.java))
-                finish()
+            .apply {
+                if(success) {
+                    setTitle(resources.getString(R.string.register_success_title))
+                    setMessage(resources.getString(R.string.register_success_message))
+                    setPositiveButton(resources.getString(R.string.register_success_ok)) { _, _ ->
+                        startActivity(Intent(this@RegisterActivity, LoginActivity::class.java))
+                        finish()
+                    }
+                } else {
+                    setMessage(resources.getString(R.string.register_failed_message))
+                    setPositiveButton(resources.getString(R.string.register_success_ok)) { _, _ -> }
+                }
+
             }.show()
     }
 

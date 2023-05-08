@@ -15,6 +15,9 @@
         android:theme="@style/Theme.StoryApp"
         tools:targetApi="31">
         <activity
+            android:name=".view.splash_login.SplashLoginActivity"
+            android:exported="true" />
+        <activity
             android:name=".view.register.RegisterActivity"
             android:exported="true" />
         <activity
