@@ -6,12 +6,14 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.core.view.isVisible
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.gvstang.dicoding.latihan.storyapp.R
+import com.gvstang.dicoding.latihan.storyapp.api.data.Login
 import com.gvstang.dicoding.latihan.storyapp.databinding.ActivityLoginBinding
 import com.gvstang.dicoding.latihan.storyapp.model.UserModel
 import com.gvstang.dicoding.latihan.storyapp.model.UserPreference
@@ -45,16 +47,10 @@ class LoginActivity : AppCompatActivity() {
                 val password = edtPassword.text.toString()
 
                 if(email.isNotEmpty() && password.length >= 8) {
-                    if (email == user.email && password == user.password) {
-                        loginViewModel.login()
-                        showDialog(true)
-                    } else {
-                        showDialog(false)
-                    }
-                    edtEmail.text?.clear()
-                    edtPassword.text?.clear()
+                    loginViewModel.loginApi(Login(email, password))
                 }
             }
+
             btnRegister.setOnClickListener {
                 startActivity(Intent(this@LoginActivity, RegisterActivity::class.java))
             }
@@ -70,6 +66,36 @@ class LoginActivity : AppCompatActivity() {
         loginViewModel.getUser().observe(this) { user ->
             this.user = user
             Log.d("user:Login", user.toString())
+        }
+
+        loginViewModel.isLoading.observe(this) { isLoading ->
+            showLoading(isLoading)
+            if(!isLoading) {
+                binding.apply {
+                    edtEmail.text?.clear()
+                    edtPassword.text?.clear()
+                }
+            }
+        }
+
+        loginViewModel.responseBody.observe(this) { responseBody ->
+            with(responseBody.loginResult) {
+                loginViewModel.login(UserModel(
+                    userId,
+                    name,
+                    this@LoginActivity.user.email,
+                    this@LoginActivity.user.password,
+                    token,
+                    true
+                ))
+            }
+            showDialog(true)
+        }
+
+        loginViewModel.isError.observe(this) { isError ->
+            if(isError) {
+                showDialog(!isError)
+            }
         }
     }
 
@@ -108,6 +134,15 @@ class LoginActivity : AppCompatActivity() {
                 setPositiveButton(resources.getString(R.string.login_failed_ok)) { _, _ -> }
             }
             show()
+        }
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        binding.apply {
+            pbLoading.isVisible = isLoading
+            btnLogin.isVisible = !isLoading
+            tvOr.isVisible = !isLoading
+            btnRegister.isVisible = !isLoading
         }
     }
 }

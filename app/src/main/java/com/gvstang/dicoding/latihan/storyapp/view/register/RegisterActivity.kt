@@ -5,14 +5,14 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import androidx.appcompat.app.AlertDialog
+import androidx.core.view.isVisible
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.gvstang.dicoding.latihan.storyapp.R
+import com.gvstang.dicoding.latihan.storyapp.api.data.Register
 import com.gvstang.dicoding.latihan.storyapp.databinding.ActivityRegisterBinding
 import com.gvstang.dicoding.latihan.storyapp.model.UserModel
 import com.gvstang.dicoding.latihan.storyapp.model.UserPreference
@@ -46,12 +46,7 @@ class RegisterActivity : AppCompatActivity() {
                 val password = edtPassword.text.toString()
 
                 if(name.isNotEmpty() && email.isNotEmpty() && password.length >= 8) {
-                    registerViewModel.saveUser(UserModel(name, email, password, false))
-                    showDialog(name)
-
-                    edtName.text?.clear()
-                    edtEmail.text?.clear()
-                    edtPassword.text?.clear()
+                    registerViewModel.registerApi(Register(name, email, password))
                 }
             }
             btnLogin.setOnClickListener {
@@ -65,6 +60,23 @@ class RegisterActivity : AppCompatActivity() {
             this,
             ViewModelFactory(UserPreference.getInstance(dataStore))
         )[RegisterViewModel::class.java]
+
+        registerViewModel.isLoading.observe(this) { isLoading ->
+            showLoading(isLoading)
+            if(!isLoading) {
+                binding.apply {
+                    edtName.text?.clear()
+                    edtEmail.text?.clear()
+                    edtPassword.text?.clear()
+                }
+            }
+        }
+
+        registerViewModel.responseBody.observe(this) { responseBody ->
+            if(!responseBody.error) {
+                showDialog()
+            }
+        }
     }
 
     private fun playAnimation() {
@@ -88,13 +100,22 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
-    private fun showDialog(name: String) {
+    private fun showDialog() {
         MaterialAlertDialogBuilder(this@RegisterActivity, com.google.android.material.R.style.MaterialAlertDialog_Material3)
-            .setTitle(resources.getString(R.string.register_success_title, name))
+            .setTitle(resources.getString(R.string.register_success_title))
             .setMessage(resources.getString(R.string.register_success_message))
             .setPositiveButton(resources.getString(R.string.register_success_ok)) { _, _ ->
                 startActivity(Intent(this@RegisterActivity, LoginActivity::class.java))
                 finish()
             }.show()
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        binding.apply {
+            pbLoading.isVisible = isLoading
+            btnLogin.isVisible = !isLoading
+            tvOr.isVisible = !isLoading
+            btnRegister.isVisible = !isLoading
+        }
     }
 }

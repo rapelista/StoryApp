@@ -14,10 +14,10 @@
     <string name="name_empty">Masukkan nama</string>
     <string name="empty_field">Masukkan %s</string>
 
-    <string name="register_success_title">Halo %s!</string>
-    <string name="register_success_message">Akun berhasil dibuat, silahkan login dan upload ceritamu!</string>
+    <string name="register_success_title">Berhasil!</string>
+    <string name="register_success_message">Akun selesai dibuat, silahkan login dan upload ceritamu!</string>
     <string name="register_success_ok">Okay</string>
-    <string name="tv_main">Hello %s!</string>
+    <string name="tv_main">Halo %s!</string>
     <string name="logout">Keluar</string>
     <string name="logout_alert_message">Apakah yakin ingin keluar?</string>
     <string name="logout_alert_confirm">Iya</string>
