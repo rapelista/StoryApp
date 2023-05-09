@@ -26,6 +26,7 @@
     <string name="login_failed">Login gagal!</string>
     <string name="login_failed_ok">Okay</string>
     <string name="register_failed_message">Pendaftaran gagal, silahkan ulangi lagi!</string>
+    <string name="cancel">Batal</string>
 
     <string name="john_doe">John Doe</string>
     <string name="posted_by">Diposting oleh %s</string>

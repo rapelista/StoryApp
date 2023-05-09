@@ -9,15 +9,33 @@
     tools:ignore="SpeakableTextPresentCheck">
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_gallery"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:alpha="0"
+        android:contentDescription="@string/add_story"
+        app:srcCompat="@drawable/ic_gallery_24" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_camera"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:alpha="0"
+        android:contentDescription="@string/add_story"
+        app:srcCompat="@drawable/ic_camera_24" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_add_story"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
         android:contentDescription="@string/add_story"
-        app:srcCompat="@drawable/ic_add_24"
-        app:hideMotionSpec="@android:anim/fade_out"
-        app:showMotionSpec="@android:anim/fade_in"/>
+        app:srcCompat="@drawable/ic_add_24" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -55,6 +73,15 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:ignore="TouchTargetSizeCheck" />
+
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                android:id="@+id/lp_loading"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btn_logout" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_story"

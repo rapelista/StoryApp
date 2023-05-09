@@ -1,10 +1,14 @@
 package com.gvstang.dicoding.latihan.storyapp.view.main
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
@@ -17,6 +21,7 @@ import com.gvstang.dicoding.latihan.storyapp.api.response.Story
 import com.gvstang.dicoding.latihan.storyapp.databinding.ActivityMainBinding
 import com.gvstang.dicoding.latihan.storyapp.model.UserModel
 import com.gvstang.dicoding.latihan.storyapp.model.UserPreference
+import com.gvstang.dicoding.latihan.storyapp.util.animation.Animation
 import com.gvstang.dicoding.latihan.storyapp.view.ViewModelFactory
 import com.gvstang.dicoding.latihan.storyapp.view.detail.DetailFragment
 import com.gvstang.dicoding.latihan.storyapp.view.login.LoginActivity
@@ -25,6 +30,8 @@ private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(na
 
 class MainActivity : AppCompatActivity() {
 
+    private var fabClicked = false
+
     private var user: UserModel? = null
     private val listStory = ArrayList<Story>()
 
@@ -32,7 +39,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var mainViewModel: MainViewModel
 
     var modalDetail = DetailFragment()
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,10 +50,45 @@ class MainActivity : AppCompatActivity() {
         setupRecyclerView()
     }
 
+    private fun playAnimation(state: Boolean) {
+        val fabCamera: ObjectAnimator?
+        val fabGallery: ObjectAnimator?
+        val fabCameraAlpha: ObjectAnimator?
+        val fabGalleryAlpha: ObjectAnimator?
+
+        if(state) {
+            fabCamera = Animation().create(Animation.FAB_CAMERA_ON, binding.fabCamera)
+            fabCameraAlpha = Animation().create(Animation.ALPHA, binding.fabCamera)
+            fabGallery = Animation().create(Animation.FAB_GALLERY_ON, binding.fabGallery)
+            fabGalleryAlpha = Animation().create(Animation.ALPHA, binding.fabGallery)
+        } else {
+            fabCamera = Animation().create(Animation.FAB_CAMERA_OFF, binding.fabCamera)
+            fabCameraAlpha = Animation().create(Animation.ALPHA_OFF, binding.fabCamera)
+            fabGallery = Animation().create(Animation.FAB_GALLERY_OFF, binding.fabGallery)
+            fabGalleryAlpha = Animation().create(Animation.ALPHA_OFF, binding.fabGallery)
+        }
+
+        AnimatorSet().apply {
+            playTogether( fabCamera, fabCameraAlpha, fabGallery, fabGalleryAlpha)
+        }.start()
+    }
+
     private fun setupView() {
         binding.apply {
             btnLogout.setOnClickListener {
                 showDialog()
+            }
+
+            fabAddStory.setOnClickListener {
+                fabClicked = if(!fabClicked) {
+                    playAnimation(true)
+                    fabAddStory.setImageDrawable(ContextCompat.getDrawable(this@MainActivity, R.drawable.ic_arrow_up_24))
+                    true
+                } else {
+                    fabAddStory.setImageDrawable(ContextCompat.getDrawable(this@MainActivity, R.drawable.ic_add_24))
+                    playAnimation(false)
+                    false
+                }
             }
         }
     }
@@ -71,22 +112,30 @@ class MainActivity : AppCompatActivity() {
         }
 
         mainViewModel.listStory.observe(this) { listStory ->
-            binding.rvStory.adapter = ListStoryAdapter(listStory)
+            val adapter = ListStoryAdapter(listStory)
+            binding.rvStory.adapter = adapter
+
+            adapter.loaded.observe(this) {
+                binding.lpLoading.setProgress(it * 10, true)
+                if(binding.lpLoading.progress == 100) {
+                    binding.lpLoading.isVisible = false
+                }
+            }
         }
     }
 
     private fun setupRecyclerView() {
         val layoutManager = LinearLayoutManager(this)
-        val adapter = ListStoryAdapter(listStory)
         binding.apply {
             rvStory.layoutManager = layoutManager
-            rvStory.adapter = adapter
+            rvStory.adapter = ListStoryAdapter(listStory)
         }
     }
 
     private fun showDialog() {
         MaterialAlertDialogBuilder(this@MainActivity, com.google.android.material.R.style.MaterialAlertDialog_Material3)
             .setMessage(resources.getString(R.string.logout_alert_message))
+            .setNeutralButton(resources.getString(R.string.cancel)) {_, _ -> }
             .setPositiveButton(resources.getString(R.string.logout_alert_confirm)) { _, _ ->
                 mainViewModel.logout()
             }.show()
