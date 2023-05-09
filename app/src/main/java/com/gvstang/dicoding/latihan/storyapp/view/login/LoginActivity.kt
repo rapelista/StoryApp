@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import androidx.core.view.isVisible
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
@@ -19,7 +18,6 @@ import com.gvstang.dicoding.latihan.storyapp.model.UserModel
 import com.gvstang.dicoding.latihan.storyapp.model.UserPreference
 import com.gvstang.dicoding.latihan.storyapp.util.animation.Animation
 import com.gvstang.dicoding.latihan.storyapp.view.ViewModelFactory
-import com.gvstang.dicoding.latihan.storyapp.view.main.MainActivity
 import com.gvstang.dicoding.latihan.storyapp.view.register.RegisterActivity
 import com.gvstang.dicoding.latihan.storyapp.view.splash_login.SplashLoginActivity
 
@@ -44,16 +42,24 @@ class LoginActivity : AppCompatActivity() {
     private fun setupView() {
         binding.apply {
             btnLogin.setOnClickListener {
-                val email = edtEmail.text.toString()
-                val password = edtPassword.text.toString()
+                inputEmail.clearFocus()
+                inputPassword.clearFocus()
 
-                if(email.isNotEmpty() && password.length >= 8) {
+                if(inputEmail.isValidated.value == true && inputPassword.isValidated.value == true) {
+                    val email = edtEmail.text.toString()
+                    val password = edtPassword.text.toString()
+
                     loginViewModel.loginApi(Login(email, password))
                 }
             }
 
             btnRegister.setOnClickListener {
                 startActivity(Intent(this@LoginActivity, RegisterActivity::class.java))
+            }
+
+            edtPassword.setOnEditorActionListener { _, _, _ ->
+                btnLogin.requestFocus()
+                btnLogin.performClick()
             }
         }
     }
@@ -66,17 +72,10 @@ class LoginActivity : AppCompatActivity() {
 
         loginViewModel.getUser().observe(this) { user ->
             this.user = user
-            Log.d("user:Login", user.toString())
         }
 
         loginViewModel.isLoading.observe(this) { isLoading ->
             showLoading(isLoading)
-            if(!isLoading) {
-                binding.apply {
-                    edtEmail.text?.clear()
-                    edtPassword.text?.clear()
-                }
-            }
         }
 
         loginViewModel.responseBody.observe(this) { responseBody ->
@@ -123,16 +122,23 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    fun showDialogError() {
+    private fun showDialogError() {
         MaterialAlertDialogBuilder(this@LoginActivity, com.google.android.material.R.style.MaterialAlertDialog_Material3).apply {
             setMessage(resources.getString(R.string.login_failed))
-            setPositiveButton(resources.getString(R.string.login_failed_ok)) { _, _ -> }
+            setPositiveButton(resources.getString(R.string.login_failed_ok)) { _, _ ->
+                binding.apply {
+                    inputEmail.requestFocus()
+                }
+            }
             show()
         }
     }
 
     private fun showLoading(isLoading: Boolean) {
         binding.apply {
+            edtEmail.isEnabled = !isLoading
+            edtPassword.isEnabled = !isLoading
+
             pbLoading.isVisible = isLoading
             btnLogin.isVisible = !isLoading
             tvOr.isVisible = !isLoading

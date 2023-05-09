@@ -14,16 +14,6 @@ data class LoginResponse(
 	val message: String
 )
 
-data class LoginError(
-
-	@field:SerializedName("error")
-	val error: Boolean,
-
-	@field:SerializedName("message")
-	val message: String
-
-)
-
 data class LoginResult(
 
 	@field:SerializedName("name")

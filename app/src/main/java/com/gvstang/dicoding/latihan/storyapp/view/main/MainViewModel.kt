@@ -1,19 +1,26 @@
 package com.gvstang.dicoding.latihan.storyapp.view.main
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import com.gvstang.dicoding.latihan.storyapp.api.data.Story
+import com.gvstang.dicoding.latihan.storyapp.api.ApiConfig
+import com.gvstang.dicoding.latihan.storyapp.api.response.StoriesResponse
+import com.gvstang.dicoding.latihan.storyapp.api.response.Story
 import com.gvstang.dicoding.latihan.storyapp.model.UserModel
 import com.gvstang.dicoding.latihan.storyapp.model.UserPreference
 import kotlinx.coroutines.launch
+import retrofit2.Response
 
 class MainViewModel(private val pref: UserPreference) : ViewModel() {
 
     private var _listStory = MutableLiveData<ArrayList<Story>>()
     val listStory: LiveData<ArrayList<Story>> = _listStory
+
+    private var _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData<Boolean> = _isLoading
 
     fun getUser(): LiveData<UserModel> {
         return pref.getUser().asLiveData()
@@ -26,16 +33,31 @@ class MainViewModel(private val pref: UserPreference) : ViewModel() {
     }
 
     fun getListStory(token: String) {
-        // loading dulu ges
+        _isLoading.value = true
 
-        val data = ArrayList<Story>()
-        data.add(Story("Jojo", "https://story-api.dicoding.dev/images/stories/photos-1683563653413_zYd37bPA.jpg"))
-        data.add(Story("Akmal", "https://story-api.dicoding.dev/images/stories/photos-1683563567718_mEvLrC3u.jpg"))
-        data.add(Story("Rizqi", "https://story-api.dicoding.dev/images/stories/photos-1683563566338_PUU78Mit.jpg"))
+        val client = ApiConfig.getApiService().stories("Bearer $token")
+        client.enqueue(object : retrofit2.Callback<StoriesResponse> {
+            override fun onResponse(
+                call: retrofit2.Call<StoriesResponse>,
+                response: Response<StoriesResponse>,
+            ) {
+                if (response.isSuccessful) {
+                    val data = ArrayList<Story>()
+                    val responseBody = response.body()
 
+                    responseBody?.listStory?.map {
+                        data.add(it)
+                    }
+                    _listStory.value = data
+                }
 
-        // beres loading
-        _listStory.value = data
+                _isLoading.value = false
+            }
+
+            override fun onFailure(call: retrofit2.Call<StoriesResponse>, t: Throwable) {
+                Log.e("getListStory", t.toString())
+            }
+        })
     }
 
 }

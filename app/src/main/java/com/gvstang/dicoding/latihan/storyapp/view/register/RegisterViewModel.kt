@@ -4,17 +4,13 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.gvstang.dicoding.latihan.storyapp.api.ApiConfig
 import com.gvstang.dicoding.latihan.storyapp.api.data.Register
 import com.gvstang.dicoding.latihan.storyapp.api.response.RegisterResponse
-import com.gvstang.dicoding.latihan.storyapp.model.UserModel
-import com.gvstang.dicoding.latihan.storyapp.model.UserPreference
-import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Response
 
-class RegisterViewModel(private val pref: UserPreference): ViewModel() {
+class RegisterViewModel: ViewModel() {
 
     private var _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
@@ -24,12 +20,6 @@ class RegisterViewModel(private val pref: UserPreference): ViewModel() {
 
     private var _responseBody = MutableLiveData<RegisterResponse>()
     val responseBody: LiveData<RegisterResponse> = _responseBody
-
-    fun saveUser(user: UserModel) {
-        viewModelScope.launch {
-            pref.saveUser(user)
-        }
-    }
 
     fun registerApi(user: Register) {
         _isLoading.value = true

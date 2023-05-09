@@ -51,11 +51,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:maxLines="1"
+            android:inputType="text"
             tools:ignore="VisualLintTextFieldSize,TextContrastCheck,SpeakableTextPresentCheck,DuplicateSpeakableTextCheck,DuplicateClickableBoundsCheck" />
 
     </com.gvstang.dicoding.latihan.storyapp.util.view.MyTextInputLayout>
 
-    <com.gvstang.dicoding.latihan.storyapp.util.view.MyTextInputLayout
+    <com.gvstang.dicoding.latihan.storyapp.util.view.MyEmailInputLayout
         android:id="@+id/input_email"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -78,7 +79,7 @@
             android:inputType="textEmailAddress"
             tools:ignore="VisualLintTextFieldSize,TextContrastCheck,SpeakableTextPresentCheck,DuplicateSpeakableTextCheck,DuplicateClickableBoundsCheck" />
 
-    </com.gvstang.dicoding.latihan.storyapp.util.view.MyTextInputLayout>
+    </com.gvstang.dicoding.latihan.storyapp.util.view.MyEmailInputLayout>
 
     <com.gvstang.dicoding.latihan.storyapp.util.view.MyPasswordEditText
         android:id="@+id/input_password"

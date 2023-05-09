@@ -6,19 +6,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import com.google.gson.Gson
 import com.gvstang.dicoding.latihan.storyapp.api.ApiConfig
 import com.gvstang.dicoding.latihan.storyapp.api.data.Login
-import com.gvstang.dicoding.latihan.storyapp.api.response.LoginError
 import com.gvstang.dicoding.latihan.storyapp.api.response.LoginResponse
-import com.gvstang.dicoding.latihan.storyapp.api.response.LoginResult
 import com.gvstang.dicoding.latihan.storyapp.model.UserModel
 import com.gvstang.dicoding.latihan.storyapp.model.UserPreference
 import kotlinx.coroutines.launch
 import retrofit2.Call
-import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.converter.gson.GsonConverterFactory
 
 class LoginViewModel(private val pref: UserPreference): ViewModel() {
 

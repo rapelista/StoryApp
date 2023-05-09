@@ -14,7 +14,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.gvstang.dicoding.latihan.storyapp.R
 import com.gvstang.dicoding.latihan.storyapp.api.data.Register
 import com.gvstang.dicoding.latihan.storyapp.databinding.ActivityRegisterBinding
-import com.gvstang.dicoding.latihan.storyapp.model.UserModel
 import com.gvstang.dicoding.latihan.storyapp.model.UserPreference
 import com.gvstang.dicoding.latihan.storyapp.util.animation.Animation
 import com.gvstang.dicoding.latihan.storyapp.view.ViewModelFactory
@@ -41,16 +40,28 @@ class RegisterActivity : AppCompatActivity() {
     private fun setupView() {
         binding.apply {
             btnRegister.setOnClickListener {
-                val name = edtName.text.toString().replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() }
-                val email = edtEmail.text.toString()
-                val password = edtPassword.text.toString()
+                inputName.clearFocus()
+                inputEmail.clearFocus()
+                inputPassword.clearFocus()
 
-                if(name.isNotEmpty() && email.isNotEmpty() && password.length >= 8) {
+                if(
+                    inputName.isValidated.value == true && inputEmail.isValidated.value == true && inputPassword.isValidated.value == true
+                ) {
+                    val name = edtName.text.toString().replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() }
+                    val email = edtEmail.text.toString()
+                    val password = edtPassword.text.toString()
+
                     registerViewModel.registerApi(Register(name, email, password))
                 }
             }
+
             btnLogin.setOnClickListener {
                 startActivity(Intent(this@RegisterActivity, LoginActivity::class.java))
+            }
+
+            edtPassword.setOnEditorActionListener { _, _, _ ->
+                btnRegister.requestFocus()
+                btnRegister.performClick()
             }
         }
     }
@@ -63,13 +74,6 @@ class RegisterActivity : AppCompatActivity() {
 
         registerViewModel.isLoading.observe(this) { isLoading ->
             showLoading(isLoading)
-            if(!isLoading) {
-                binding.apply {
-                    edtName.text?.clear()
-                    edtEmail.text?.clear()
-                    edtPassword.text?.clear()
-                }
-            }
         }
 
         registerViewModel.responseBody.observe(this) { responseBody ->
@@ -126,6 +130,10 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun showLoading(isLoading: Boolean) {
         binding.apply {
+            edtName.isEnabled = !isLoading
+            edtEmail.isEnabled = !isLoading
+            edtPassword.isEnabled = !isLoading
+
             pbLoading.isVisible = isLoading
             btnLogin.isVisible = !isLoading
             tvOr.isVisible = !isLoading

@@ -16,14 +16,15 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.37"
         app:srcCompat="@drawable/ic_check_circle_96"
-        app:tint="?attr/colorPrimary" />
+        app:tint="?attr/colorPrimary"
+        android:contentDescription="@string/login_success" />
 
     <TextView
         android:id="@+id/tv_success"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Login berhasil!"
+        android:text="@string/login_success"
         android:textSize="28sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@+id/iv_success"
