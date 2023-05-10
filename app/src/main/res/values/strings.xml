@@ -1,49 +1,49 @@
 <resources>
     <string name="app_name">Story App</string>
 
-    <string name="name">Nama</string>
+    <string name="name">Name</string>
     <string name="password">Password</string>
-    <string name="error_password">Minimal 8 karakter</string>
-    <string name="login">Masuk</string>
-    <string name="or">atau</string>
-    <string name="register">Daftar</string>
-    <string name="welcome">Selamat Datang!</string>
+    <string name="error_password">Minimum 8 characters</string>
+    <string name="login">Log In</string>
+    <string name="or">or</string>
+    <string name="register">Register</string>
+    <string name="welcome">Welcome!</string>
     <string name="email">Email</string>
-    <string name="email_empty">Masukkan email</string>
-    <string name="password_empty">Masukkan password</string>
-    <string name="name_empty">Masukkan nama</string>
-    <string name="empty_field">Masukkan %s</string>
+    <string name="email_empty">Input email</string>
+    <string name="password_empty">Input password</string>
+    <string name="name_empty">Input name</string>
+    <string name="empty_field">Please input your %s</string>
 
-    <string name="register_success_title">Berhasil!</string>
-    <string name="register_success_message">Akun selesai dibuat, silahkan login dan upload ceritamu!</string>
+    <string name="register_success_title">Success!</string>
+    <string name="register_success_message">Your account successfully registered! Let share your stories!</string>
     <string name="register_success_ok">Okay</string>
-    <string name="tv_main">Halo %s!</string>
-    <string name="logout">Keluar</string>
-    <string name="logout_alert_message">Apakah yakin ingin keluar?</string>
-    <string name="logout_alert_confirm">Iya</string>
-    <string name="login_success">Login berhasil!</string>
+    <string name="tv_main">Hi %s!</string>
+    <string name="logout">Log Out</string>
+    <string name="logout_alert_message">Are you sure?</string>
+    <string name="logout_alert_confirm">Yes</string>
+    <string name="login_success">Login success!</string>
     <string name="login_success_ok">Okay</string>
-    <string name="login_failed">Login gagal!</string>
+    <string name="login_failed">Login failed!</string>
     <string name="login_failed_ok">Okay</string>
-    <string name="register_failed_message">Pendaftaran gagal, silahkan ulangi lagi!</string>
-    <string name="cancel">Batal</string>
+    <string name="register_failed_message">Registration failed, please try again!</string>
+    <string name="cancel">Cancel</string>
 
     <string name="john_doe">John Doe</string>
-    <string name="posted_by">Diposting oleh %s</string>
-    <string name="add_story">Tambah Story</string>
+    <string name="posted_by">Posted by %s</string>
+    <string name="add_story">Add Story</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="posted_date">Diposting pada %s</string>
-    <string name="email_error">Email tidak valid</string>
-    <string name="camera">kamera</string>
-    <string name="switch_camera">Putar kamera</string>
+    <string name="posted_date">Posted at %s</string>
+    <string name="email_error">Email invalid</string>
+    <string name="camera">camera</string>
+    <string name="switch_camera">Switch camera</string>
     <string name="camera_failed">Gagal memunculkan kamera</string>
     <string name="permissions_failed">Tidak mendapatkan permission.</string>
     <string name="upload">Upload</string>
-    <string name="desc">Deskripsi</string>
+    <string name="desc">Description</string>
     <string name="preview">Preview</string>
 
-    <string name="upload_failed_message">Upload story gagal, silahkan ulangi lagi!</string>
+    <string name="upload_failed_message">Upload failed, please try again!</string>
 
     <string-array name="month">
         <item>Januari</item>
