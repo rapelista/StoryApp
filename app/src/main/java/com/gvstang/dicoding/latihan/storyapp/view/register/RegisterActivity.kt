@@ -40,8 +40,9 @@ class RegisterActivity : AppCompatActivity() {
     private fun setupView() {
         binding.apply {
             btnRegister.setOnClickListener {
-                inputName.clearFocus()
-                inputEmail.clearFocus()
+                inputName.requestFocus()
+                inputEmail.requestFocus()
+                inputPassword.requestFocus()
                 inputPassword.clearFocus()
 
                 if(
@@ -91,14 +92,14 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun playAnimation() {
         binding.apply {
-            val image = Animation().create(Animation.TRANSLATE_X, ivLogin, 3000)
-            val welcome = Animation().create(Animation.ALPHA, tvRegister, 1000)
-            val name = Animation().create(Animation.ALPHA, inputName)
-            val email = Animation().create(Animation.ALPHA, inputEmail)
-            val password = Animation().create(Animation.ALPHA, inputPassword)
-            val login = Animation().create(Animation.ALPHA, btnLogin)
-            val or = Animation().create(Animation.ALPHA, tvOr)
-            val register = Animation().create(Animation.ALPHA, btnRegister)
+            val image = Animation(resources).create(Animation.TRANSLATE_X, ivLogin, 3000)
+            val welcome = Animation(resources).create(Animation.ALPHA, tvRegister, 1000)
+            val name = Animation(resources).create(Animation.ALPHA, inputName)
+            val email = Animation(resources).create(Animation.ALPHA, inputEmail)
+            val password = Animation(resources).create(Animation.ALPHA, inputPassword)
+            val login = Animation(resources).create(Animation.ALPHA, btnLogin)
+            val or = Animation(resources).create(Animation.ALPHA, tvOr)
+            val register = Animation(resources).create(Animation.ALPHA, btnRegister)
 
             AnimatorSet().apply{
                 playTogether(image, AnimatorSet().apply {

@@ -35,6 +35,15 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="posted_date">Diposting pada %s</string>
     <string name="email_error">Email tidak valid</string>
+    <string name="camera">kamera</string>
+    <string name="switch_camera">Putar kamera</string>
+    <string name="camera_failed">Gagal memunculkan kamera</string>
+    <string name="permissions_failed">Tidak mendapatkan permission.</string>
+    <string name="upload">Upload</string>
+    <string name="desc">Deskripsi</string>
+    <string name="preview">Preview</string>
+
+    <string name="upload_failed_message">Upload story gagal, silahkan ulangi lagi!</string>
 
     <string-array name="month">
         <item>Januari</item>

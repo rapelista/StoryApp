@@ -35,11 +35,9 @@ class RegisterViewModel: ViewModel() {
                     _responseBody.value = response.body()
                 } else {
                     _isError.value = true
-                    Log.e("registerApi", "ada error")
                 }
 
                 _isLoading.value = false
-                Log.d("isLoading", isLoading.value.toString())
             }
 
             override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {

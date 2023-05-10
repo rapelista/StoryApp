@@ -16,6 +16,7 @@ open class MyTextInputLayout(context: Context, attrs: AttributeSet?) : TextInput
         super.onFinishInflate()
         editText?.setOnFocusChangeListener { _, hasFocus ->
             this.apply {
+                _isValidated.value = false
                 isErrorEnabled = false
                 if(!hasFocus) {
                     if(editText!!.text.isEmpty()) {

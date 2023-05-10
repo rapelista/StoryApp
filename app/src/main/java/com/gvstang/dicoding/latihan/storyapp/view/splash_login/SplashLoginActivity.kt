@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.gvstang.dicoding.latihan.storyapp.R
 import com.gvstang.dicoding.latihan.storyapp.view.main.MainActivity
 

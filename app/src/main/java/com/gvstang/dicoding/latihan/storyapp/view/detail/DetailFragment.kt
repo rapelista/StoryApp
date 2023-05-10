@@ -1,16 +1,14 @@
 package com.gvstang.dicoding.latihan.storyapp.view.detail
 
-import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.RequiresApi
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.gvstang.dicoding.latihan.storyapp.R
 import com.gvstang.dicoding.latihan.storyapp.databinding.FragmentDetailBinding
+import java.io.File
 
 class DetailFragment : BottomSheetDialogFragment() {
 
@@ -25,7 +23,6 @@ class DetailFragment : BottomSheetDialogFragment() {
         return binding.root
     }
 
-    @RequiresApi(Build.VERSION_CODES.R)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -35,11 +32,21 @@ class DetailFragment : BottomSheetDialogFragment() {
             val name = bundle.getString(NAME)
             val description = bundle.getString(DESCRIPTION)
             val createdAt = bundle.getString(CREATED_AT)
+            val photoPath = bundle.getString(PHOTO_PATH)
 
             binding.apply {
-                Glide.with(view.context)
-                    .load(photoUrl)
-                    .into(ivDetailPhoto)
+                if(photoUrl != null) {
+                    Glide.with(view.context)
+                        .load(photoUrl)
+                        .into(ivDetailPhoto)
+                }
+                if(photoPath != null) {
+                    val image = File(photoPath)
+                    Glide.with(view.context)
+                        .load(image)
+                        .into(ivDetailPhoto)
+                }
+
                 tvDetailName.text = name
                 tvDetailDesc.text = description
                 tvDetailDate.text = resources.getString(R.string.posted_date, createdAt)
@@ -50,7 +57,6 @@ class DetailFragment : BottomSheetDialogFragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        Log.d("onDestroyView", "anu")
         _binding = null
     }
 
@@ -60,6 +66,7 @@ class DetailFragment : BottomSheetDialogFragment() {
         const val PHOTO_URL = "photoUrl"
         const val DESCRIPTION = "description"
         const val CREATED_AT = "createdAt"
+        const val PHOTO_PATH = "photoPath"
     }
 
 }

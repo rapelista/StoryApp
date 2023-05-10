@@ -19,9 +19,6 @@ class MainViewModel(private val pref: UserPreference) : ViewModel() {
     private var _listStory = MutableLiveData<ArrayList<Story>>()
     val listStory: LiveData<ArrayList<Story>> = _listStory
 
-    private var _isLoading = MutableLiveData<Boolean>()
-    val isLoading: LiveData<Boolean> = _isLoading
-
     fun getUser(): LiveData<UserModel> {
         return pref.getUser().asLiveData()
     }
@@ -33,8 +30,6 @@ class MainViewModel(private val pref: UserPreference) : ViewModel() {
     }
 
     fun getListStory(token: String) {
-        _isLoading.value = true
-
         val client = ApiConfig.getApiService().stories("Bearer $token")
         client.enqueue(object : retrofit2.Callback<StoriesResponse> {
             override fun onResponse(
@@ -50,8 +45,6 @@ class MainViewModel(private val pref: UserPreference) : ViewModel() {
                     }
                     _listStory.value = data
                 }
-
-                _isLoading.value = false
             }
 
             override fun onFailure(call: retrofit2.Call<StoriesResponse>, t: Throwable) {
