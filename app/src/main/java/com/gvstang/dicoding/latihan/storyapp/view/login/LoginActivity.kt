@@ -42,15 +42,15 @@ class LoginActivity : AppCompatActivity() {
     private fun setupView() {
         binding.apply {
             btnLogin.setOnClickListener {
-                inputEmail.requestFocus()
-                inputPassword.requestFocus()
-                inputPassword.clearFocus()
-
                 if(inputEmail.isValidated.value == true && inputPassword.isValidated.value == true) {
                     val email = edtEmail.text.toString()
                     val password = edtPassword.text.toString()
 
                     loginViewModel.loginApi(Login(email, password))
+                } else {
+                    inputEmail.requestFocus()
+                    inputPassword.requestFocus()
+                    inputPassword.clearFocus()
                 }
             }
 

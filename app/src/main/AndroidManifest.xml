@@ -24,13 +24,13 @@
             android:exported="false" />
         <activity
             android:name=".view.splash_login.SplashLoginActivity"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".view.register.RegisterActivity"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".view.login.LoginActivity"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".view.main.MainActivity"
             android:exported="true">

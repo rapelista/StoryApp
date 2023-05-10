@@ -40,10 +40,6 @@ class RegisterActivity : AppCompatActivity() {
     private fun setupView() {
         binding.apply {
             btnRegister.setOnClickListener {
-                inputName.requestFocus()
-                inputEmail.requestFocus()
-                inputPassword.requestFocus()
-                inputPassword.clearFocus()
 
                 if(
                     inputName.isValidated.value == true && inputEmail.isValidated.value == true && inputPassword.isValidated.value == true
@@ -53,6 +49,11 @@ class RegisterActivity : AppCompatActivity() {
                     val password = edtPassword.text.toString()
 
                     registerViewModel.registerApi(Register(name, email, password))
+                } else {
+                    inputName.requestFocus()
+                    inputEmail.requestFocus()
+                    inputPassword.requestFocus()
+                    inputPassword.clearFocus()
                 }
             }
 
