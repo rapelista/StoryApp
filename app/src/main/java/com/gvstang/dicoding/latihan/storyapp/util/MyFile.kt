@@ -2,8 +2,11 @@ package com.gvstang.dicoding.latihan.storyapp.util
 
 import android.content.ContentResolver
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Environment
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
@@ -11,7 +14,7 @@ import java.io.OutputStream
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class MyFile(private val context: Context) {
+class MyFile(private var context: Context?) {
 
     private var timestamp = String()
 
@@ -23,12 +26,12 @@ class MyFile(private val context: Context) {
     }
 
     fun create(): File {
-        val storageDir: File? = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        val storageDir: File? = context!!.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         return File.createTempFile(timestamp, ".jpg", storageDir)
     }
 
     fun fromUri(image: Uri): File {
-        val contentResolver: ContentResolver = context.contentResolver
+        val contentResolver: ContentResolver = context!!.contentResolver
         val myFile = create()
 
         val inputStream = contentResolver.openInputStream(image) as InputStream
@@ -42,8 +45,24 @@ class MyFile(private val context: Context) {
         return myFile
     }
 
+    fun reduceFile(file: File): File {
+        val bitmap = BitmapFactory.decodeFile(file.path)
+        var compressQuality = 100
+        var streamLength: Int
+        do {
+            val bmpStream = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.JPEG, compressQuality, bmpStream)
+            val bmpPicByteArray = bmpStream.toByteArray()
+            streamLength = bmpPicByteArray.size
+            compressQuality -= 5
+        } while (streamLength > MAXIMAL_SIZE)
+        bitmap.compress(Bitmap.CompressFormat.JPEG, compressQuality, FileOutputStream(file))
+        return file
+    }
+
     companion object {
         const val FILENAME_FORMAT = "ddMMMyyyyHHmmss"
+        const val MAXIMAL_SIZE = 1000000
     }
 
 }

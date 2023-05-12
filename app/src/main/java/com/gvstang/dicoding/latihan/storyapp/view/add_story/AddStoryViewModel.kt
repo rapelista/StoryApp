@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.gvstang.dicoding.latihan.storyapp.api.ApiConfig
 import com.gvstang.dicoding.latihan.storyapp.api.data.Story
 import com.gvstang.dicoding.latihan.storyapp.api.response.NewStoryResponse
+import com.gvstang.dicoding.latihan.storyapp.util.MyFile
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -27,7 +28,7 @@ class AddStoryViewModel: ViewModel() {
         _isLoading.value = true
         _isSuccess.value = false
 
-        val file = File(story.photoPath)
+        val file = MyFile(null).reduceFile(File(story.photoPath))
         val description = story.description.toRequestBody("text/plain".toMediaType())
         val requestImageFile = file.asRequestBody("image/jpeg".toMediaType())
         val imageMultiPart: MultipartBody.Part = MultipartBody.Part.createFormData(
