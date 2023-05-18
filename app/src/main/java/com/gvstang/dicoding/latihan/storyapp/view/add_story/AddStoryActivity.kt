@@ -85,8 +85,6 @@ class AddStoryActivity : AppCompatActivity() {
                 this@AddStoryActivity.location = location
 
                 if (location != null) {
-//                    val lat = location.latitude
-//                    val lon = location.longitude
                     Log.d("location", location.toString())
                 } else {
                     Toast.makeText(

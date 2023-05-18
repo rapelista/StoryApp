@@ -44,6 +44,7 @@
     <string name="preview">Preview</string>
 
     <string name="upload_failed_message">Upload failed, please try again!</string>
+    <string name="view_location">View Location</string>
 
     <string-array name="month">
         <item>Januari</item>

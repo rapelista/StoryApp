@@ -1,5 +1,6 @@
 package com.gvstang.dicoding.latihan.storyapp.view.detail
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,6 +10,7 @@ import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.gvstang.dicoding.latihan.storyapp.R
 import com.gvstang.dicoding.latihan.storyapp.databinding.FragmentDetailBinding
+import com.gvstang.dicoding.latihan.storyapp.view.maps.MapsActivity
 import java.io.File
 
 class DetailFragment : BottomSheetDialogFragment() {
@@ -55,7 +57,17 @@ class DetailFragment : BottomSheetDialogFragment() {
                 tvDetailDate.text = resources.getString(R.string.posted_date, createdAt)
 
                 btnLocation.setOnClickListener {
-                    Log.d("location", "$latitude $longitude")
+                    Log.d("location:Detail", """
+                        latitude: $latitude
+                        longitude: $longitude
+                    """.trimIndent())
+                    val intent = Intent(activity, MapsActivity::class.java)
+
+                    intent.putExtra(MapsActivity.LATITUDE, latitude)
+                    intent.putExtra(MapsActivity.LONGITUDE, longitude)
+                    intent.putExtra(MapsActivity.NAME, name)
+
+                    startActivity(intent)
                 }
             }
 
