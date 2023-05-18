@@ -45,6 +45,7 @@
     <string name="preview">Preview</string>
 
     <string name="upload_failed_message">Upload story gagal, silahkan ulangi lagi!</string>
+    <string name="view_location">Lihat Lokasi</string>
 
     <string-array name="month">
         <item>Januari</item>

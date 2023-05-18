@@ -1,12 +1,24 @@
 package com.gvstang.dicoding.latihan.storyapp.view.add_story
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.R
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.gvstang.dicoding.latihan.storyapp.api.data.Story
@@ -22,6 +34,9 @@ class AddStoryActivity : AppCompatActivity() {
     private lateinit var currentPhotoPath: String
     private lateinit var name: String
     private lateinit var token: String
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+
+    var location: Location? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,8 +47,66 @@ class AddStoryActivity : AppCompatActivity() {
         name = intent.getStringExtra(NAME).toString()
         token = intent.getStringExtra(TOKEN).toString()
 
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+
+        setupLocation()
         setupView()
         setupViewModel()
+    }
+
+    private val requestPermissionLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.RequestMultiplePermissions()
+        ) { permissions ->
+            when {
+                permissions[Manifest.permission.ACCESS_FINE_LOCATION] ?: false -> {
+                    // Precise location access granted.
+                    setupLocation()
+                }
+                permissions[Manifest.permission.ACCESS_COARSE_LOCATION] ?: false -> {
+                    // Only approximate location access granted.
+                    setupLocation()
+                }
+                else -> {
+                    // No location access granted.
+                }
+            }
+        }
+
+    private fun checkPermission(permission: String): Boolean {
+        return ContextCompat.checkSelfPermission(
+            this,
+            permission
+        ) == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun setupLocation() {
+        if     (checkPermission(Manifest.permission.ACCESS_FINE_LOCATION) &&
+            checkPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
+        ){
+            fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
+                this@AddStoryActivity.location = location
+
+                if (location != null) {
+                    val lat = location.latitude
+                    val lon = location.longitude
+                    Log.d("location", location.toString())
+                } else {
+                    Toast.makeText(
+                        this@AddStoryActivity,
+                        "Location is not found. Try Again",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        } else {
+            requestPermissionLauncher.launch(
+                arrayOf(
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                )
+            )
+        }
     }
 
     private fun setupViewModel() {
@@ -99,6 +172,8 @@ class AddStoryActivity : AppCompatActivity() {
                     bundle.putString(DetailFragment.DESCRIPTION, description.toString())
                     bundle.putString(DetailFragment.CREATED_AT, date)
                     bundle.putString(DetailFragment.NAME, name)
+                    bundle.putDouble(DetailFragment.LATITUDE, location!!.latitude)
+                    bundle.putDouble(DetailFragment.LONGITUDE, location!!.longitude)
 
                     modalPreview.arguments = bundle
                     modalPreview.show(supportFragmentManager, DetailFragment.TAG)

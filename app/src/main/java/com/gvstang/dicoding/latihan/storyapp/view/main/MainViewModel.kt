@@ -43,6 +43,7 @@ class MainViewModel(private val pref: UserPreference) : ViewModel() {
                     responseBody?.listStory?.map {
                         data.add(it)
                     }
+
                     _listStory.value = data
                 }
             }

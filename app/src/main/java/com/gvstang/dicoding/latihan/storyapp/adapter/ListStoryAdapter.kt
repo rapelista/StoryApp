@@ -2,6 +2,7 @@ package com.gvstang.dicoding.latihan.storyapp.adapter
 
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -75,6 +76,8 @@ class ListStoryAdapter(private val listStory: ArrayList<Story>):
                             bundle.putString(PHOTO_URL, photoUrl)
                             bundle.putString(DESCRIPTION, description)
                             bundle.putString(CREATED_AT, Date(createdAt, holder.itemView.resources).format())
+                            bundle.putDouble(LATITUDE, lat as Double)
+                            bundle.putDouble(LONGITUDE, lon as Double)
 
                             modalDetail.arguments = bundle
                             modalDetail.show(supportFragmentManager, TAG)

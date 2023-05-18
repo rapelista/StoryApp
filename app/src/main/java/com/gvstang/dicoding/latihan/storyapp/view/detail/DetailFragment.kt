@@ -1,6 +1,7 @@
 package com.gvstang.dicoding.latihan.storyapp.view.detail
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,6 +34,8 @@ class DetailFragment : BottomSheetDialogFragment() {
             val description = bundle.getString(DESCRIPTION)
             val createdAt = bundle.getString(CREATED_AT)
             val photoPath = bundle.getString(PHOTO_PATH)
+            val latitude = bundle.getDouble(LATITUDE)
+            val longitude = bundle.getDouble(LONGITUDE)
 
             binding.apply {
                 if(photoUrl != null) {
@@ -50,6 +53,10 @@ class DetailFragment : BottomSheetDialogFragment() {
                 tvDetailName.text = name
                 tvDetailDesc.text = description
                 tvDetailDate.text = resources.getString(R.string.posted_date, createdAt)
+
+                btnLocation.setOnClickListener {
+                    Log.d("location", "$latitude $longitude")
+                }
             }
 
         }
@@ -67,6 +74,8 @@ class DetailFragment : BottomSheetDialogFragment() {
         const val DESCRIPTION = "description"
         const val CREATED_AT = "createdAt"
         const val PHOTO_PATH = "photoPath"
+        const val LATITUDE = "lat"
+        const val LONGITUDE = "lon"
     }
 
 }
