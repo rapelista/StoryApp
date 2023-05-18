@@ -16,9 +16,6 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.R
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.gvstang.dicoding.latihan.storyapp.api.data.Story
@@ -36,7 +33,7 @@ class AddStoryActivity : AppCompatActivity() {
     private lateinit var token: String
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
-    var location: Location? = null
+    private var location: Location? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -88,8 +85,8 @@ class AddStoryActivity : AppCompatActivity() {
                 this@AddStoryActivity.location = location
 
                 if (location != null) {
-                    val lat = location.latitude
-                    val lon = location.longitude
+//                    val lat = location.latitude
+//                    val lon = location.longitude
                     Log.d("location", location.toString())
                 } else {
                     Toast.makeText(
