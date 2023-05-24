@@ -90,16 +90,6 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:ignore="TouchTargetSizeCheck" />
 
-            <com.google.android.material.progressindicator.LinearProgressIndicator
-                android:id="@+id/lp_loading"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:visibility="invisible"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btn_logout" />
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_story"
                 android:layout_width="match_parent"

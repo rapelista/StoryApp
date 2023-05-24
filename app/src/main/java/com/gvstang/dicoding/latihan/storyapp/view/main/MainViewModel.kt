@@ -1,58 +1,31 @@
 package com.gvstang.dicoding.latihan.storyapp.view.main
 
-import android.util.Log
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import com.gvstang.dicoding.latihan.storyapp.api.ApiConfig
-import com.gvstang.dicoding.latihan.storyapp.api.response.StoriesResponse
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.gvstang.dicoding.latihan.storyapp.api.response.Story
+import com.gvstang.dicoding.latihan.storyapp.data.StoryRepository
 import com.gvstang.dicoding.latihan.storyapp.model.UserModel
 import com.gvstang.dicoding.latihan.storyapp.model.UserPreference
 import kotlinx.coroutines.launch
-import retrofit2.Response
 
-class MainViewModel(private val pref: UserPreference) : ViewModel() {
-
-    private var _listStory = MutableLiveData<ArrayList<Story>>()
-    val listStory: LiveData<ArrayList<Story>> = _listStory
+class MainViewModel(private val pref: UserPreference? = null, private val storyRepository: StoryRepository) : ViewModel() {
 
     fun getUser(): LiveData<UserModel> {
-        return pref.getUser().asLiveData()
+        return pref!!.getUser().asLiveData()
     }
 
     fun logout() {
         viewModelScope.launch {
-            pref.logout()
+            pref!!.logout()
         }
     }
 
-    fun getListStory(token: String) {
-        val client = ApiConfig.getApiService().stories("Bearer $token")
-        client.enqueue(object : retrofit2.Callback<StoriesResponse> {
-            override fun onResponse(
-                call: retrofit2.Call<StoriesResponse>,
-                response: Response<StoriesResponse>,
-            ) {
-                Log.d("user", getUser().value.toString())
-                if (response.isSuccessful) {
-                    val data = ArrayList<Story>()
-                    val responseBody = response.body()
-
-                    responseBody?.listStory?.map {
-                        data.add(it)
-                    }
-
-                    _listStory.value = data
-                }
-            }
-
-            override fun onFailure(call: retrofit2.Call<StoriesResponse>, t: Throwable) {
-                Log.e("getListStory", t.toString())
-            }
-        })
+    fun stories(token: String): LiveData<PagingData<Story>> {
+        return storyRepository.getStories(token).cachedIn(viewModelScope)
     }
 
 }

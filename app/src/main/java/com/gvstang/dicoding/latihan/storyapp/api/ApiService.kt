@@ -29,11 +29,18 @@ interface ApiService {
         @Body body: Login
     ): Call<LoginResponse>
 
+//    @GET("stories")
+//    fun stories(
+//        @Header("Authorization") auth: String,
+//        @Query("location") location: Int = 1
+//    ): Call<StoriesResponse>
+
     @GET("stories")
-    fun stories(
+    suspend fun stories(
         @Header("Authorization") auth: String,
+        @Query("page") page: Int,
         @Query("location") location: Int = 1
-    ): Call<StoriesResponse>
+    ): StoriesResponse
 
     @Multipart
     @POST("stories")

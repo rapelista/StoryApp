@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.gvstang.dicoding.latihan.storyapp.R
 import com.gvstang.dicoding.latihan.storyapp.adapter.ListStoryAdapter
+import com.gvstang.dicoding.latihan.storyapp.adapter.StoryPagingAdapter
 import com.gvstang.dicoding.latihan.storyapp.api.response.Story
 import com.gvstang.dicoding.latihan.storyapp.databinding.ActivityMainBinding
 import com.gvstang.dicoding.latihan.storyapp.model.UserModel
@@ -91,7 +92,6 @@ class MainActivity : AppCompatActivity() {
         binding.apply {
             tvMain.isVisible = true
             btnLogout.isVisible = true
-            lpLoading.isVisible = true
             rvStory.isVisible = true
             fabAddStory.isVisible = true
             fabCamera.isVisible = true
@@ -174,20 +174,16 @@ class MainActivity : AppCompatActivity() {
                 setupView()
                 setupRecyclerView()
 
-                mainViewModel.getListStory(user.token)
+                getStories(user.token)
             }
         }
+    }
 
-        mainViewModel.listStory.observe(this) { listStory ->
-            val adapter = ListStoryAdapter(listStory)
-            binding.rvStory.adapter = adapter
-
-            adapter.loaded.observe(this) {
-                binding.lpLoading.setProgress(it * 10, true)
-                if(binding.lpLoading.progress == 100) {
-                    binding.lpLoading.isVisible = false
-                }
-            }
+    private fun getStories(token: String) {
+        val adapter = StoryPagingAdapter()
+        binding.rvStory.adapter = adapter
+        mainViewModel.stories(token).observe(this) {
+            adapter.submitData(lifecycle, it)
         }
     }
 
