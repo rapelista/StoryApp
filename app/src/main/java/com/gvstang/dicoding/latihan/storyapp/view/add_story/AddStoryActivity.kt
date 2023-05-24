@@ -187,7 +187,7 @@ class AddStoryActivity : AppCompatActivity() {
 
                 if(inputDesc.isValidated.value == true) {
                     addStoryViewModel.addStory(
-                        Story(currentPhotoPath, edtDesc.text.toString()),
+                        Story(currentPhotoPath, edtDesc.text.toString(), location!!.latitude, location!!.longitude),
                         token
                     )
                 }

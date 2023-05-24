@@ -36,6 +36,7 @@ class MainViewModel(private val pref: UserPreference) : ViewModel() {
                 call: retrofit2.Call<StoriesResponse>,
                 response: Response<StoriesResponse>,
             ) {
+                Log.d("user", getUser().value.toString())
                 if (response.isSuccessful) {
                     val data = ArrayList<Story>()
                     val responseBody = response.body()

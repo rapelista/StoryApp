@@ -30,6 +30,8 @@ class AddStoryViewModel: ViewModel() {
 
         val file = MyFile(null).reduceFile(File(story.photoPath))
         val description = story.description.toRequestBody("text/plain".toMediaType())
+        val latitude = story.lat.toFloat()
+        val longitude = story.lon.toFloat()
         val requestImageFile = file.asRequestBody("image/jpeg".toMediaType())
         val imageMultiPart: MultipartBody.Part = MultipartBody.Part.createFormData(
             "photo",
@@ -40,7 +42,9 @@ class AddStoryViewModel: ViewModel() {
         val client = ApiConfig.getApiService().stories(
             "Bearer $token",
             imageMultiPart,
-            description
+            description,
+            latitude,
+            longitude
         )
         client.enqueue(object : retrofit2.Callback<NewStoryResponse> {
             override fun onResponse(
