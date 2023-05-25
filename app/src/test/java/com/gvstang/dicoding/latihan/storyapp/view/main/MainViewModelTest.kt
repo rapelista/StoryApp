@@ -66,7 +66,7 @@ class MainViewModelTest {
         Mockito.verify(storyRepository).getStories(TOKEN)
         assertNotNull(dataActual)
         assertEquals(dataActual.size, dummyStory.size)
-        assertEquals(dataActual[0].name, dummyStory[0].name)
+        assertEquals(dataActual[0], dummyStory[0])
     }
 
     @Test
